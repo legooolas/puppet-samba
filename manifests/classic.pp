@@ -69,16 +69,12 @@ class samba::classic(
 ) inherits samba::params{
 
 
-  unless is_domain_name($realm){
+  unless $realm =~ Stdlib::Host {
     fail('realm must be a valid domain')
   }
 
-  unless is_domain_name($realm){
-    fail('realm must be a valid domain')
-  }
-
-  validate_slength($smbname, 15)
-  unless is_domain_name("${smbname}.${realm}"){
+  assert_type(String[1, 15], $smbname)
+  unless "${smbname}.${realm}" =~ Stdlib::Host {
     fail('smbname must be a valid domain')
   }
 
